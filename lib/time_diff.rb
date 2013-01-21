@@ -67,8 +67,14 @@ class Time
     format_string
   end
 
-  def Time.pluralize(word, count)
-    return count != 1 ? I18n.t(word.pluralize, :default => word.pluralize) : I18n.t(word, :default =>  word)
+  # default path to I18n changed from "en.day" to "en.time.day"
+  # Thought it would be a good idea to put all these date locales under a category
+  def Time.pluralize(word)
+    base_locale_str = 'time.'
+    pluralized_word = word.pluralize
+    localized_word = base_locale_str + word
+    localized_pluralized_word = base_local_str + word.pluralize
+    return count != 1 ? I18n.t(localized_pluralized_word, :default => pluralized_word) : I18n.t(localized_word, :default => word)
   end
 
   def Time.remove_format_string_for_zero_components(time_diff_components, format_string)
